@@ -15,17 +15,14 @@ def criar_tarefa():
         descricao=data.get('descricao'),
         data_conclusao=data.get('data_conclusao')
     )
+    try:
+        session.add(nova_tarefa)
+        session.commit()
+    except Exception as e:
+        session.rollback()
+        return jsonify({"message": "Erro ao salvar tarefa"}), 500
 
-    session.add(nova_tarefa)
-    session.commit()
-
-    return jsonify({
-        "id": nova_tarefa.id,
-        "titulo": nova_tarefa.titulo,
-        "descricao": nova_tarefa.descricao,
-        "data_criacao": nova_tarefa.data_criacao,
-        "data_conclusao": nova_tarefa.data_conclusao
-    }), 201
+    return jsonify({"message":"Salvo com sucesso!"}), 201
 
 @views.route('/tarefas', methods=['GET'])
 def listarTarefas():

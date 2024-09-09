@@ -8,9 +8,9 @@ class Tarefa(Base):
     
     id = Column(Integer, primary_key=True)
     titulo = Column(String(100), nullable=False)
-    descricao = Column(Text, nullable=True)
+    descricao = Column(Text, nullable=False)
     data_criacao = Column(DateTime(timezone=True), server_default=func.now())
-    data_conclusao = Column(DateTime(timezone=True), nullable=True)
+    data_conclusao = Column(DateTime(timezone=True), nullable=False)
 
     def __repr__(self):
         return f"<Tarefa(id={self.id}, titulo={self.titulo}, descricao={self.descricao})>"

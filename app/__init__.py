@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
+from flask_cors import CORS
 import os
 
 load_dotenv()
@@ -22,7 +23,7 @@ session = Session()
 def create_app():
     app = Flask(__name__)
     app.config['JSON_AS_ASCII'] = False
-    
+    CORS(app, resources={r"/*": {"origins": "http://localhost:4200"}})
     from .views import views
     app.register_blueprint(views, url_prefix='/')
 
