@@ -26,3 +26,34 @@ def criar_tarefa():
         "data_criacao": nova_tarefa.data_criacao,
         "data_conclusao": nova_tarefa.data_conclusao
     }), 201
+
+@views.route('/tarefas', methods=['GET'])
+def listarTarefas():
+    tarefas = session.query(Tarefa).all()
+    return jsonify([{
+        "id": tarefa.id,
+        "titulo": tarefa.titulo,
+        "descricao": tarefa.descricao,
+        "data_criacao": tarefa.data_criacao,
+        "data_conclusao": tarefa.data_conclusao
+    } for tarefa in tarefas]), 200
+    
+@views.route('/tarefas/<int:id>', methods=['PUT'])
+def editarTarefa(id):
+    tarefa = session.query(Tarefa).get(id)
+    if not tarefa:
+        return jsonify({"message": "Tarefa não encontrada"}), 404
+
+    tarefa.titulo = request.json.get('titulo', tarefa.titulo)
+    tarefa.descricao = request.json.get('descricao', tarefa.descricao)
+    tarefa.data_conclusao = request.json.get('data_conclusao', tarefa.data_conclusao)
+    
+    session.commit()
+    
+    return jsonify({
+        "id": tarefa.id,
+        "titulo": tarefa.titulo,
+        "descricao": tarefa.descricao,
+        "data_criacao": tarefa.data_criacao,
+        "data_conclusao": tarefa.data_conclusao
+    }), 201
