@@ -57,3 +57,14 @@ def editarTarefa(id):
         "data_criacao": tarefa.data_criacao,
         "data_conclusao": tarefa.data_conclusao
     }), 201
+    
+@views.route('/tarefas/<int:id>', methods=['DELETE'])
+def deletarTarefa(id):
+    tarefa = session.query(Tarefa).get(id)
+    if not tarefa:
+        return jsonify({"message": "Tarefa não encontrada"}), 404
+
+    session.delete(tarefa)
+    session.commit()
+    
+    return jsonify({"message": "Tarefa deletada com sucesso"}), 200
